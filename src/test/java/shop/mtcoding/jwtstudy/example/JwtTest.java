@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2Res
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class JwtTest {
@@ -51,7 +53,17 @@ public class JwtTest {
         System.out.println(jwt);
 
         // when
-        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("메타코딩")).build().verify(jwt);
+        try {
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("메타코딩")).build().verify(jwt);
+            int id = decodedJWT.getClaim("id").asInt();
+            String role = decodedJWT.getClaim("role").asString();
+            System.out.println(id);
+            System.out.println(role);
+        } catch (SignatureVerificationException sve) {
+            System.out.println("토큰 검증 실패" + sve.getMessage());
+        } catch (TokenExpiredException tee) {
+            System.out.println("토큰 시간 만료" + tee.getMessage());
+        }
 
         // then
     }
