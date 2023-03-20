@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2Res
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class JwtTest {
 
@@ -22,7 +23,7 @@ public class JwtTest {
 
         // when
         String jwt = JWT.create()
-                .withSubject("토근제목")
+                .withSubject("토큰제목")
                 // 토큰 만료 기한(기한이 끝나면 재 로그인)
                 // currentTimeMillis 현재 시간
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
@@ -34,6 +35,24 @@ public class JwtTest {
                 .sign(Algorithm.HMAC512("메타코딩"));
 
         System.out.println(jwt);
+        // then
+    }
+
+    @Test
+    public void VerifyJwt_test() {
+        // give
+        String jwt = JWT.create()
+                .withSubject("토큰제목")
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
+                .withClaim("id", 1)
+                .withClaim("role", "guest")
+                .sign(Algorithm.HMAC512("메타코딩"));
+
+        System.out.println(jwt);
+
+        // when
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("메타코딩")).build().verify(jwt);
+
         // then
     }
 }
