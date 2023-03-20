@@ -60,9 +60,9 @@ public class JwtTest {
             System.out.println(id);
             System.out.println(role);
         } catch (SignatureVerificationException sve) {
-            System.out.println("토큰 검증 실패" + sve.getMessage());
+            System.out.println("토큰 검증 실패" + sve.getMessage()); // 위조
         } catch (TokenExpiredException tee) {
-            System.out.println("토큰 시간 만료" + tee.getMessage());
+            System.out.println("토큰 시간 만료" + tee.getMessage()); // 오래됨
         }
 
         // then
