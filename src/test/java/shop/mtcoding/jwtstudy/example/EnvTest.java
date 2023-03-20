@@ -1,8 +1,11 @@
 package shop.mtcoding.jwtstudy.example;
 
-public class EnvTest {
+import org.junit.jupiter.api.Test;
 
+public class EnvTest {
+    @Test
     public void env_test() {
-        String myvar 
+        String myVar = System.getenv("JAVA_HOME");
+        System.out.println(myVar);
     }
 }
